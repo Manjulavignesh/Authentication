@@ -4,7 +4,7 @@ import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading,setisLoading]=useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const emailInput = useRef();
   const passwordInput = useRef();
   const submitHandler = (e) => {
@@ -12,30 +12,35 @@ const AuthForm = () => {
     e.preventDefault();
     const enteredEmail = emailInput.current.value;
     const enteredPassword = passwordInput.current.value;
+    let url;
     if (isLogin) {
+      url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAv3hGFYf7AQ-OpkIHdzxRyIAGNtlq1m7k";
     } else {
-      fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAv3hGFYf7AQ-OpkIHdzxRyIAGNtlq1m7k",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email: enteredEmail,
-            password: enteredPassword,
-            returnSecureToken: true,
-          }),
-          headers: { "content-type": "application/json" },
-        }
-      ).then((res) => {
-        setisLoading(false);
-        if (res.ok) {
-        } else {
-          return res.json().then((data)=>{
-            let errorMessage="Authentication Failed";
-            alert(errorMessage);
-          })
-        }
-      });
+      url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAv3hGFYf7AQ-OpkIHdzxRyIAGNtlq1m7k";
     }
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+        returnSecureToken: true,
+      }),
+      headers: { "content-type": "application/json" },
+    }).then((res) => {
+      setisLoading(false);
+      if (res.ok) {
+        return res.json();
+      } else {
+        return res.json().then((data) => {
+          let errorMessage = "Authentication Failed";
+          throw new Error(errorMessage)
+          
+        });
+      }
+      
+    }).then((data)=>{console.log(data.idToken)}).catch((err)=>{alert(err.message);})
   };
 
   const switchAuthModeHandler = () => {
@@ -55,7 +60,9 @@ const AuthForm = () => {
           <input type="password" id="password" required ref={passwordInput} />
         </div>
         <div className={classes.actions}>
-          {!isLoading && <button>{isLogin ? "Login" : "Create Account "}</button>}
+          {!isLoading && (
+            <button>{isLogin ? "Login" : "Create Account "}</button>
+          )}
           {isLoading && <p>Sending Request.....</p>}
         </div>
         <div className={classes.actions}>
