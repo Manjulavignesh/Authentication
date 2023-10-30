@@ -1,11 +1,14 @@
 import { useState, useRef,useContext } from "react";
-
+import { useHistory } from "react-router-dom";
 import classes from "./AuthForm.module.css";
 import AuthContext from "../../store/auth-context";
 
+
 const AuthForm = () => {
+  const history=useHistory();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setisLoading] = useState(false);
+  
   const emailInput = useRef();
   const passwordInput = useRef();
   const authCtx=useContext(AuthContext)
@@ -42,7 +45,7 @@ const AuthForm = () => {
         });
       }
       
-    }).then((data)=>{authCtx.login(data.idToken)}).catch((err)=>{alert(err.message);})
+    }).then((data)=>{authCtx.login(data.idToken);history.replace("/profile")}).catch((err)=>{alert(err.message);})
   };
 
   const switchAuthModeHandler = () => {
@@ -62,8 +65,8 @@ const AuthForm = () => {
           <input type="password" id="password" required ref={passwordInput} />
         </div>
         <div className={classes.actions}>
-          {!isLoading && (
-            <button>{isLogin ? "Login" : "Create Account "}</button>
+          {!isLoading  && (
+            <button >{isLogin ? "Login" : "Create Account "}</button>
           )}
           {isLoading && <p>Sending Request.....</p>}
         </div>

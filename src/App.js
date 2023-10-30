@@ -5,10 +5,11 @@ import UserProfile from './components/Profile/UserProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 
+
 function App() {
+  
   return (
-    
-    <Layout>
+     <Layout>
       <Switch>
         <Route path='/' exact>
           <HomePage />
@@ -21,6 +22,7 @@ function App() {
         </Route>
       </Switch>
     </Layout>
+   
     
   );
 }
