@@ -9,8 +9,9 @@ const MainNavigation = () => {
   const authCtx=useContext(AuthContext)
   const history=useHistory();
   const logoutHandler=()=>{
-    authCtx.logout();
+    authCtx.logout(authCtx.key);
     history.replace("/auth")
+    
   }
   return (
     <header className={classes.header}>
