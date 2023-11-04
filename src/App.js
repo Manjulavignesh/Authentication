@@ -1,5 +1,4 @@
 import { Switch, Route, Redirect, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profile/UserProfile';
 import AuthPage from './pages/AuthPage';

@@ -13,6 +13,7 @@ export const AuthContextProvider = (props) => {
   const loginHandler = (token) => {
     setToken(token);
     localStorage.setItem("token",token);
+    setTimeout(()=>{localStorage.removeItem("token");},500000)
   };
   const logoutHandler = () => {
     setToken(null);
